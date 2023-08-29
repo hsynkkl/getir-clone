@@ -15,8 +15,8 @@ function index({ images }: { images: string[] }) {
         alignItems: "center",
         width: "100%",
         backgroundColor: "white",
-        height: height * 0.25,
-        paddingTop: 25,
+        height: height * 0.22,
+        paddingTop: 0,
       }}
     >
       <FlatList
@@ -30,7 +30,7 @@ function index({ images }: { images: string[] }) {
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
-        snapToInterval={width}
+        snapToInterval={width * 0.5}
         decelerationRate={"fast"}
         viewabilityConfig={viewConfigRef.current}
         onViewableItemsChanged={onViewRef.current}
