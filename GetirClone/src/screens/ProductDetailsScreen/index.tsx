@@ -36,7 +36,7 @@ function index(props) {
         <DetailsProperty></DetailsProperty>
       </ScrollView>
 
-      <CardButton></CardButton>
+      <CardButton item={product}></CardButton>
     </View>
   );
 }

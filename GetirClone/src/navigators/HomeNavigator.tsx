@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/HomeScreen";
 import CategoryFilterScreen from "../screens/CategoryFilterScreen";
@@ -6,15 +6,24 @@ import ProductDetailsScreen from "../screens/ProductDetailsScreen";
 import CartScreen from "../screens/CartScreen";
 import { Ionicons, Foundation } from "@expo/vector-icons";
 import { Image, Text, View, TouchableOpacity, Dimensions } from "react-native";
-
+import { connect } from "react-redux";
 import {
   getFocusedRouteNameFromRoute,
   useNavigation,
 } from "@react-navigation/native";
+import { Product } from "../models";
 const Stack = createStackNavigator();
 const { width, height } = Dimensions.get("window");
-function MyStack({ navigation, route }) {
+function MyStack({
+  navigation,
+  route,
+  cartItems,
+}: {
+  cartItems: { product: Product; quantity: number }[];
+}) {
   const tabHiddenRoutes = ["ProductDetails", "CartScreen"];
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (tabHiddenRoutes.includes(routeName)) {
@@ -23,6 +32,16 @@ function MyStack({ navigation, route }) {
       navigation.setOptions({ tabBarStyle: { display: "true" } });
     }
   }, [navigation, route]);
+  const getProductPrice = () => {
+    var total = 0;
+    cartItems.forEach((cartItem) => {
+      const price = (total += cartItem.product.fiyat);
+      setTotalPrice(price);
+    });
+  };
+  useEffect(() => {
+    getProductPrice();
+  }, [cartItems, navigation]);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -99,7 +118,8 @@ function MyStack({ navigation, route }) {
                 <Text
                   style={{ color: "#5d3ebd", fontWeight: "bold", fontSize: 12 }}
                 >
-                  <Text>{"\u20BA"}</Text>1224,00
+                  <Text>{"\u20BA"}</Text>
+                  {totalPrice.toFixed(2)}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -170,7 +190,15 @@ function MyStack({ navigation, route }) {
     </Stack.Navigator>
   );
 }
-
-export default function HomeNavigator({ navigation, route }) {
-  return <MyStack navigation={navigation} route={route} />;
+const mapStateToProps = (state) => {
+  const { cartItems } = state;
+  return {
+    cartItems: cartItems,
+  };
+};
+function HomeNavigator({ navigation, route, cartItems }) {
+  return (
+    <MyStack navigation={navigation} route={route} cartItems={cartItems} />
+  );
 }
+export default connect(mapStateToProps, null)(HomeNavigator);

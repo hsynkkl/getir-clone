@@ -11,13 +11,19 @@ import productsGetir from "../../../assets/productsGetir";
 import CartItem from "../../components/CartItem";
 import ProductItem from "../../components/ProductItem";
 const { width, height } = Dimensions.get("window");
-function index() {
+import { connect } from "react-redux";
+import { Product } from "../../models";
+function index({
+  cartItems,
+}: {
+  cartItems: { product: Product; quantity: number };
+}) {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
         <FlatList
-          data={productsGetir.slice(0, 1)}
-          renderItem={({ item }) => <CartItem product={item} />}
+          data={cartItems}
+          renderItem={({ item }) => <CartItem product={item.product} />}
         />
         <Text style={{ padding: 15, fontWeight: "bold", color: "#5f3ebd" }}>
           Önerilen Ürünler
@@ -83,5 +89,10 @@ function index() {
     </View>
   );
 }
-
-export default index;
+const mapStateToProps = (state) => {
+  const { cartItems } = state;
+  return {
+    cartItems: cartItems,
+  };
+};
+export default connect(mapStateToProps, null)(index);
