@@ -1,11 +1,15 @@
 import React from "react";
-import { View, Text, Image, Dimensions } from "react-native";
+import { View, Text, Image, Dimensions, TouchableOpacity } from "react-native";
 import { Product } from "../../models";
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions/cartActions";
 type CartItemProps = {
   product: Product;
+  quantity: number;
+  removeFromCart: (product: Product) => void;
 };
 const { width, height } = Dimensions.get("window");
-function index({ product }: CartItemProps) {
+function index({ product, quantity, removeFromCart }: CartItemProps) {
   return (
     <View style={{ width: "100%", backgroundColor: "white" }}>
       <View
@@ -87,9 +91,12 @@ function index({ product }: CartItemProps) {
             shadowColor: "gray",
           }}
         >
-          <View style={{ flex: 1, alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={() => removeFromCart(product)}
+            style={{ flex: 1, alignItems: "center" }}
+          >
             <Text>-</Text>
-          </View>
+          </TouchableOpacity>
           <View
             style={{
               flex: 1,
@@ -100,7 +107,7 @@ function index({ product }: CartItemProps) {
             }}
           >
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 12 }}>
-              2
+              {quantity}
             </Text>
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
@@ -111,5 +118,10 @@ function index({ product }: CartItemProps) {
     </View>
   );
 }
-
-export default index;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeFromCart: (product: Product) =>
+      dispatch(actions.removeFromCart(product)),
+  };
+};
+export default connect(null, mapDispatchToProps)(index);

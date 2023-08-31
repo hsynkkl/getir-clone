@@ -7,7 +7,7 @@ import BannerCarousel from "../../components/BannerCarousel";
 import CategoryItem from "../../components/CategoryItem";
 import MainCategories from "../../components/MainCategories";
 
-function index() {
+function HomeScreen() {
   return (
     <ScrollView stickyHeaderIndices={[0]}>
       <HeaderMain />
@@ -16,4 +16,4 @@ function index() {
     </ScrollView>
   );
 }
-export default index;
+export default HomeScreen;

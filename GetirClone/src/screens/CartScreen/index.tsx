@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -13,17 +13,31 @@ import ProductItem from "../../components/ProductItem";
 const { width, height } = Dimensions.get("window");
 import { connect } from "react-redux";
 import { Product } from "../../models";
-function index({
+function CartScreen({
   cartItems,
 }: {
   cartItems: { product: Product; quantity: number };
 }) {
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const getProductsPrice = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.product.fiyat;
+      setTotalPrice(total);
+    });
+    cartItems.length ? null : setTotalPrice(0);
+  };
+  useEffect(() => {
+    getProductsPrice();
+  }, [cartItems]);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
         <FlatList
           data={cartItems}
-          renderItem={({ item }) => <CartItem product={item.product} />}
+          renderItem={({ item }) => (
+            <CartItem product={item.product} quantity={item.quantity} />
+          )}
         />
         <Text style={{ padding: 15, fontWeight: "bold", color: "#5f3ebd" }}>
           Önerilen Ürünler
@@ -82,7 +96,8 @@ function index({
           }}
         >
           <Text style={{ color: "#5d3ebd", fontWeight: "bold", fontSize: 16 }}>
-            <Text>{"\u20BA"}</Text>24,00
+            <Text>{"\u20BA"}</Text>
+            {totalPrice.toFixed(2)}
           </Text>
         </View>
       </View>
@@ -95,4 +110,4 @@ const mapStateToProps = (state) => {
     cartItems: cartItems,
   };
 };
-export default connect(mapStateToProps, null)(index);
+export default connect(mapStateToProps, null)(CartScreen);

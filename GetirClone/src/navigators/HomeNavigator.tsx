@@ -7,6 +7,7 @@ import CartScreen from "../screens/CartScreen";
 import { Ionicons, Foundation } from "@expo/vector-icons";
 import { Image, Text, View, TouchableOpacity, Dimensions } from "react-native";
 import { connect } from "react-redux";
+import * as actions from "../redux/actions/cartActions";
 import {
   getFocusedRouteNameFromRoute,
   useNavigation,
@@ -18,8 +19,10 @@ function MyStack({
   navigation,
   route,
   cartItems,
+  clearCart,
 }: {
   cartItems: { product: Product; quantity: number }[];
+  clearCart: () => void;
 }) {
   const tabHiddenRoutes = ["ProductDetails", "CartScreen"];
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -181,7 +184,10 @@ function MyStack({
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity style={{ paddingRight: 12 }}>
+            <TouchableOpacity
+              style={{ paddingRight: 12 }}
+              onPress={() => clearCart()}
+            >
               <Ionicons name="trash" size={24} color="white" />
             </TouchableOpacity>
           ),
@@ -196,9 +202,26 @@ const mapStateToProps = (state) => {
     cartItems: cartItems,
   };
 };
-function HomeNavigator({ navigation, route, cartItems }) {
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearCart: () => dispatch(actions.clearCart()),
+  };
+};
+function HomeNavigator({
+  navigation,
+  route,
+  cartItems,
+  clearCart,
+}: {
+  clearCart: () => void;
+}) {
   return (
-    <MyStack navigation={navigation} route={route} cartItems={cartItems} />
+    <MyStack
+      navigation={navigation}
+      route={route}
+      cartItems={cartItems}
+      clearCart={clearCart}
+    />
   );
 }
-export default connect(mapStateToProps, null)(HomeNavigator);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeNavigator);

@@ -5,7 +5,7 @@ import ImageCarousel from "../../components/ImageCarousel";
 import DetailsBox from "../../components/DetailsBox";
 import DetailsProperty from "../../components/DetailsProperty";
 import CardButton from "../../components/CardButton";
-function index(props) {
+function ProductDetailsScreen(props) {
   const [product, setProduct] = useState<Product>();
   useEffect(() => {
     setProduct(props.route.params.product);
@@ -41,4 +41,4 @@ function index(props) {
   );
 }
 
-export default index;
+export default ProductDetailsScreen;

@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Image, Text, Dimensions } from "react-native";
+import { TouchableOpacity, Image, Text, Dimensions, View } from "react-native";
 import { Category } from "../../models";
 import { useNavigation } from "@react-navigation/native";
 
@@ -10,35 +10,36 @@ type categoryItemProps = {
 function index({ item }: categoryItemProps) {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("CategoryDetails", { category: item });
-      }}
-      style={{
-        width: width * 0.25,
-        height: width * 0.24,
-        marginTop: 10,
-        // backgroundColor: "red",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      <Image
+    <View style={{ backgroundColor: "#e0e0e0" }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("CategoryDetails", { category: item });
+        }}
         style={{
-          width: width * 0.18,
-          height: width * 0.18,
-          borderRadius: 8,
-          //   resizeMode: "center",
+          width: width * 0.25,
+          height: width * 0.24,
+          marginTop: 10,
+          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
-        source={{
-          uri: item.src,
-        }}
-      />
-      <Text style={{ fontSize: 12, color: "#616161", fontWeight: "500" }}>
-        {item.name}
-      </Text>
-    </TouchableOpacity>
+      >
+        <Image
+          style={{
+            width: width * 0.18,
+            height: width * 0.18,
+            borderRadius: 8,
+            //   resizeMode: "center",
+          }}
+          source={{
+            uri: item.src,
+          }}
+        />
+        <Text style={{ fontSize: 12, color: "#616161", fontWeight: "500" }}>
+          {item.name}
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 export default index;

@@ -4,7 +4,7 @@ import CategoryFiltering from "../../components/CategoryFiltering";
 import TypeFiltering from "../../components/TypeFiltering";
 import ProductContainer from "../../components/ProductContainer";
 import { Category } from "../../models";
-function index(props) {
+function CategoryFilterScreen(props) {
   const [category, setCategory] = useState<Category>(
     props.route.params.category
   );
@@ -17,4 +17,4 @@ function index(props) {
   );
 }
 
-export default index;
+export default CategoryFilterScreen;

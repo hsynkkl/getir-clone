@@ -17,9 +17,11 @@ function index() {
           <ProductItem key={item.id} item={item}></ProductItem>
         ))}
       </View>
-      <Text style={{ color: "gray", fontWeight: "bold", padding: 14 }}>
-        Çubuk
-      </Text>
+      <View style={{ backgroundColor: "lightgray" }}>
+        <Text style={{ color: "gray", fontWeight: "bold", padding: 14 }}>
+          Çubuk
+        </Text>
+      </View>
       <View
         style={{
           flexDirection: "row",
